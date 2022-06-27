@@ -26,9 +26,4 @@ public class MappingClassController {
     public String deleteUser(@PathVariable String userId){
         return "delete userId="+userId;
     }
-
-
-
-
-
 }
