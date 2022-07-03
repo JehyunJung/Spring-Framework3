@@ -62,4 +62,18 @@ class ItemRepositoryTest {
         Assertions.assertThat(updateParam.getPrice()).isEqualTo(updatedItem.getPrice());
         Assertions.assertThat(updateParam.getQuantity()).isEqualTo(updatedItem.getQuantity());
     }
+    @Test
+    public void deleteItem(){
+        //given
+        Item item=new Item("item1",1000,1);
+        Item savedItem=itemRepository.save(item);
+        Long itemId=savedItem.getId();
+
+        //when
+        itemRepository.deleteItem(itemId);
+
+        Item findItem = itemRepository.findById(itemId);
+        //then
+        Assertions.assertThat(findItem).isNull();
+    }
 }
