@@ -10,6 +10,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,6 +26,13 @@ import java.util.Map;
 public class ValidationItemControllerV2 {
 
     private final ItemRepository itemRepository;
+    private final ItemValidator itemValidator;
+
+    @InitBinder
+    public void init(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(itemValidator);
+    }
+
 
     @GetMapping
     public String items(Model model) {
@@ -144,7 +153,7 @@ public class ValidationItemControllerV2 {
         redirectAttributes.addAttribute("status", true);
         return "redirect:/validation/v2/items/{itemId}";
     }*/
-   @PostMapping("/add")
+   /*@PostMapping("/add")
    public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
        //검증 로직
        if(!StringUtils.hasText(item.getItemName())) {
@@ -175,7 +184,36 @@ public class ValidationItemControllerV2 {
        redirectAttributes.addAttribute("itemId", savedItem.getId());
        redirectAttributes.addAttribute("status", true);
        return "redirect:/validation/v2/items/{itemId}";
+   }*/
+   /*@PostMapping("/add")
+   public String addItemV5(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+       itemValidator.validate(item,bindingResult);
+
+       if(bindingResult.hasErrors()){
+           log.info("errors={}", bindingResult);
+           return "validation/v2/addForm";
+       }
+       //성공 로직
+       Item savedItem = itemRepository.save(item);
+       redirectAttributes.addAttribute("itemId", savedItem.getId());
+       redirectAttributes.addAttribute("status", true);
+       return "redirect:/validation/v2/items/{itemId}";
+   }*/
+   @PostMapping("/add")
+   public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+       if(bindingResult.hasErrors()){
+           log.info("errors={}", bindingResult);
+           return "validation/v2/addForm";
+       }
+       //성공 로직
+       Item savedItem = itemRepository.save(item);
+       redirectAttributes.addAttribute("itemId", savedItem.getId());
+       redirectAttributes.addAttribute("status", true);
+       return "redirect:/validation/v2/items/{itemId}";
    }
+
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
