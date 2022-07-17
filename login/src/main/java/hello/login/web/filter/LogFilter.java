@@ -18,11 +18,9 @@ public class LogFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("log filter doFilter");
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String requestURI = httpServletRequest.getRequestURI();
         String uuid = UUID.randomUUID().toString();
-
         try{
             log.info("REQUEST: [{}][{}]",uuid,requestURI);
             chain.doFilter(request,response);
@@ -34,7 +32,6 @@ public class LogFilter implements Filter {
         }
 
     }
-
     @Override
     public void destroy() {
         log.info("log filter destroy");

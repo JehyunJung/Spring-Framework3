@@ -60,7 +60,7 @@ public class HomeController {
         return "loginHome";
     }*/
     /*@GetMapping("/")
-    public String homeLoginV3(@SessionAttribute(name=SessionConst.LOGIN_MEMBER,required = false) Member member,Model model) {
+    public String homeLoginV3(  Member member,Model model) {
         if (member == null) {
             return "home";
         }
