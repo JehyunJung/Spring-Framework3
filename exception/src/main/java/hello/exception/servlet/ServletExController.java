@@ -16,6 +16,11 @@ public class ServletExController {
         throw new RuntimeException("Error!");
     }
 
+    @GetMapping("/error-400")
+    public void error400(HttpServletResponse response) throws IOException {
+        response.sendError(400);
+    }
+
     @GetMapping("/error-404")
     public void error404(HttpServletResponse response) throws IOException {
         response.sendError(404,"404 Error!");
